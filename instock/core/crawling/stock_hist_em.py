@@ -235,7 +235,7 @@ def code_id_map_em() -> dict:
     code_id_dict.update(dict(zip(temp_df_sz["f12"], temp_df_sz["bj_id"])))
     return code_id_dict
 
-
+# 获取东方财富网历史行情数据
 def stock_zh_a_hist(
     symbol: str = "000001",
     period: str = "daily",

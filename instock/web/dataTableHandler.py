@@ -43,7 +43,7 @@ class GetStockHtmlHandler(webBase.BaseHandler, ABC):
                     leftMenu=webBase.GetLeftMenu(self.request.uri))
 
 
-# 获得股票数据内容。
+# 通过查询数据库获得股票数据内容。
 class GetStockDataHandler(webBase.BaseHandler, ABC):
     def get(self):
         name = self.get_argument("name", default=None, strip=False)

@@ -24,7 +24,7 @@ class stock_data(metaclass=singleton_type):
         return self.data
 
 
-# 读取股票历史数据
+# 读取指定股票历史数据
 class stock_hist_data(metaclass=singleton_type):
     def __init__(self, date=None, stocks=None, workers=16):
         if stocks is None:
@@ -36,7 +36,7 @@ class stock_hist_data(metaclass=singleton_type):
         date_start, is_cache = trd.get_trade_hist_interval(stocks[0][0])  # 提高运行效率，只运行一次
         _data = {}
         try:
-            # max_workers是None还是没有给出，将默认为机器cup个数*5
+            # max_workers是None还是没有给出，将默认为机器cpu个数*5
             with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
                 future_to_stock = {executor.submit(stf.fetch_stock_hist, stock, date_start, is_cache): stock for stock
                                    in stocks}

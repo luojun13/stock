@@ -8,7 +8,7 @@ import pandas as pd
 __author__ = 'myh '
 __date__ = '2023/3/10 '
 
-
+# 获取单个股票的收益率
 def get_rates(code_name, data, stock_column, threshold=101):
     try:
         # 增加空判断，如果是空返回 0 数据。

@@ -47,10 +47,14 @@ def run_with_args(run_fun, *args):
     else:
         # 当前时间作业 python xxx.py
         try:
+            # run_date, run_date_nph 当前时间非交易日时，都为上一个交易日；为交易日已收盘时，都为当日；
+            # 为交易日未开盘时，都为上一个交易日；为交易日交易中时，run_date为上一个交易日，run_date_nph为当日
             run_date, run_date_nph = trd.get_trade_date_last()
             if run_fun.__name__.startswith('save_nph'):
+                # 获取实时行情数据
                 run_fun(run_date_nph, False)
             elif run_fun.__name__.startswith('save_after_close'):
+                # 获取闭盘后数据
                 run_fun(run_date, *args)
             else:
                 run_fun(run_date_nph, *args)

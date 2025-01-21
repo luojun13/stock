@@ -21,6 +21,7 @@ def get_pattern_recognitions(data, stock_column, end_date=None, threshold=120, c
 
     for k in stock_column:
         try:
+            # talib计算蜡烛图指标
             data.loc[:, k] = stock_column[k]['func'](data['open'].values, data['high'].values, data['low'].values, data['close'].values)
         except Exception as e:
             pass
@@ -35,6 +36,7 @@ def get_pattern_recognitions(data, stock_column, end_date=None, threshold=120, c
 
 
 def get_pattern_recognition(code_name, data, stock_column, date=None, calc_threshold=12):
+    # 获取蜡烛图指标 使用12天的数据计算
     try:
         # 增加空判断，如果是空返回 0 数据。
         if date is None:

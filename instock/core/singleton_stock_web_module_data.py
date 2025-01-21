@@ -1,6 +1,6 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-
+# 定义web页面左边栏数据
 import instock.core.tablestructure as tbs
 from instock.lib.singleton_type import singleton_type
 import instock.core.web_module_data as wmd

@@ -55,7 +55,7 @@ class Application(tornado.web.Application):
             debug=True,
         )
         super(Application, self).__init__(handlers, **settings)
-        # Have one global connection to the blog DB across all handlers
+        # Have one global connection to the DB across all handlers
         self.db = torndb.Connection(**mdb.MYSQL_CONN_TORNDB)
 
 

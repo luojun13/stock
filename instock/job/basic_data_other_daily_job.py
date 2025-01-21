@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 获取龙虎榜、行业/概念资金流向（今日、3日、5日、10日）、分红配送数据
 import logging
 import concurrent.futures
 import os.path
@@ -110,7 +110,7 @@ def run_check_stock_fund_flow(times):
         return data
 
 
-# 每日行业资金流向
+# 每日行业和概念资金流向
 def save_nph_stock_sector_fund_flow_data(date, before=True):
     if before:
         return
@@ -232,8 +232,8 @@ def stock_spot_buy(date):
 
 
 def main():
-    runt.run_with_args(save_nph_stock_top_data)
-    runt.run_with_args(save_nph_stock_bonus)
+    # runt.run_with_args(save_nph_stock_top_data)
+    # runt.run_with_args(save_nph_stock_bonus)
     runt.run_with_args(save_nph_stock_fund_flow_data)
     runt.run_with_args(save_nph_stock_sector_fund_flow_data)
 

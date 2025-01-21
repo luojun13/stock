@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 指标计算
 
 import logging
 import concurrent.futures
@@ -23,6 +23,7 @@ __date__ = '2023/3/10 '
 
 def prepare(date):
     try:
+        # 获取所有股票的3年历史数据
         stocks_data = stock_hist_data(date=date).get_data()
         if stocks_data is None:
             return
@@ -52,12 +53,13 @@ def prepare(date):
         date_str = date.strftime("%Y-%m-%d")
         if date.strftime("%Y-%m-%d") != data.iloc[0]['date']:
             data['date'] = date_str
+        # 指标结果数据入库
         mdb.insert_db_from_df(data, table_name, cols_type, False, "`date`,`code`")
 
     except Exception as e:
         logging.error(f"indicators_data_daily_job.prepare处理异常：{e}")
 
-
+# 计算指标
 def run_check(stocks, date=None, workers=40):
     data = {}
     columns = list(tbs.STOCK_STATS_DATA['columns'])

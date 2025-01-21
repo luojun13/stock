@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 获取东方财富网个股选股器数据入库
 
 import logging
 import pandas as pd

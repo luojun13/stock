@@ -43,7 +43,7 @@ def main():
     # 第2.2步创建综合股票数据表
     sddj.main()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        # # 第3.1步创建股票其它基础数据表
+        # # 第3.1步创建股票其它基础数据表，包括龙虎榜、行业/概念资金流向（今日、3日、5日、10日）、分红配送数据
         executor.submit(hdtj.main)
         # # 第3.2步创建股票指标数据表
         executor.submit(gdj.main)

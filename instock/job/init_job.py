@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 初始化数据库
 
 import logging
 import pymysql
@@ -34,6 +34,7 @@ def create_new_database():
 def create_new_base_table():
     with pymysql.connect(**mdb.MYSQL_CONN_DBAPI) as conn:
         with conn.cursor() as db:
+            # 创建股票关注表
             create_table_sql = """CREATE TABLE IF NOT EXISTS `cn_stock_attention` (
                                   `datetime` datetime(0) NULL DEFAULT NULL, 
                                   `code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,

@@ -11,6 +11,13 @@ __date__ = '2023/3/10 '
 
 
 def get_indicators(data, end_date=None, threshold=120, calc_threshold=None):
+    """
+    计算指标
+    data: 数据
+    end_date: 结束日期
+    threshold: 阈值,返回的数据量
+    calc_threshold: 计算阈值, 用于计算之前截取数据
+    """
     try:
         isCopy = False
         if end_date is not None:
@@ -412,6 +419,9 @@ def get_indicators(data, end_date=None, threshold=120, calc_threshold=None):
 
 
 def get_indicator(code_name, data, stock_column, date=None, calc_threshold=90):
+    """
+    计算某一个股票的所有指标，只返回最新的一条数据
+    """
     try:
         if date is None:
             end_date = code_name[0]
@@ -428,6 +438,7 @@ def get_indicator(code_name, data, stock_column, date=None, calc_threshold=90):
                 stock_data_list.append(0)
             return pd.Series(stock_data_list, index=stock_column)
 
+        # 使用90天数据计算指标，只返回最后一个数据
         idr_data = get_indicators(data, end_date=end_date, threshold=1, calc_threshold=calc_threshold)
 
         # 增加空判断，如果是空返回 0 数据。

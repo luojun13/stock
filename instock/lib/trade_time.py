@@ -111,6 +111,11 @@ def is_open(now_time):
 
 
 def get_trade_hist_interval(date):
+    """
+    获取股票历史数据的时间区间，默认获取3年前的数据
+    输入：date，格式为"%Y-%m-%d"
+    返回值：date_start, is_not_in_trade
+    """
     tmp_year, tmp_month, tmp_day = date.split("-")
     date_end = datetime.datetime(int(tmp_year), int(tmp_month), int(tmp_day))
     date_start = (date_end + datetime.timedelta(days=-(365 * 3))).strftime("%Y%m%d")
@@ -120,22 +125,33 @@ def get_trade_hist_interval(date):
     is_trade_date_open_close_between = False
     if date_end.date() == now_date:
         if is_trade_date(now_date):
+            # 当前日期是交易日
             if is_open(now_time) and not is_close(now_time):
+                # 当前日期是交易日且交易中
                 is_trade_date_open_close_between = True
 
     return date_start, not is_trade_date_open_close_between
-
-
+    
 def get_trade_date_last():
+    """
+    根据当前时间获取最近的交易日，收盘后返回当日，未收盘时返回上一个交易日
+    返回值：run_date, run_date_nph 当前时间非交易日时，都为上一个交易日；为交易日已收盘时，都为当日；
+           为交易日未开盘时，都为上一个交易日；为交易日交易中时，run_date为上一个交易日，run_date_nph为当日    
+    """
     now_time = datetime.datetime.now()
     run_date = now_time.date()
     run_date_nph = run_date
     if is_trade_date(run_date):
+        # 交易日
         if not is_close(now_time):
+            # 未收盘，获取上一个交易日
             run_date = get_previous_trade_date(run_date)
             if not is_open(now_time):
+                # 未开盘
                 run_date_nph = run_date
+        # 收盘，当日
     else:
+        # 非交易日，获取上一个交易日
         run_date = get_previous_trade_date(run_date)
         run_date_nph = run_date
     return run_date, run_date_nph

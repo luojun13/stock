@@ -21,6 +21,7 @@ class GetDataIndicatorsHandler(webBase.BaseHandler, ABC):
         name = self.get_argument("name", default=None, strip=False)
         comp_list = []
         try:
+            # 从网上抓取历史数据
             if code.startswith(('1', '5')):
                 stock = stf.fetch_etf_hist((date, code))
             else:

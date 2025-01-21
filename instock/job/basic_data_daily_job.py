@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
+# 获取股票和基金的实时行情数据
 import logging
 import os.path
 import sys

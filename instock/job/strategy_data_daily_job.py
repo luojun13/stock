@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
+# 股票策略执行
 
 import logging
 import concurrent.futures
@@ -22,6 +23,7 @@ __date__ = '2023/3/10 '
 
 def prepare(date, strategy):
     try:
+        # 获取所有股票实时行情数据
         stocks_data = stock_hist_data(date=date).get_data()
         if stocks_data is None:
             return
@@ -37,17 +39,21 @@ def prepare(date, strategy):
             mdb.executeSql(del_sql)
             cols_type = None
         else:
+            # 获取策略字段类型
             cols_type = tbs.get_field_types(tbs.TABLE_CN_STOCK_STRATEGIES[0]['columns'])
 
         data = pd.DataFrame(results)
+        # 股票外键字段：date,code,name
         columns = tuple(tbs.TABLE_CN_STOCK_FOREIGN_KEY['columns'])
         data.columns = columns
+        # 1-100日收益率
         _columns_backtest = tuple(tbs.TABLE_CN_STOCK_BACKTEST_DATA['columns'])
         data = pd.concat([data, pd.DataFrame(columns=_columns_backtest)])
         # 单例，时间段循环必须改时间
         date_str = date.strftime("%Y-%m-%d")
         if date.strftime("%Y-%m-%d") != data.iloc[0]['date']:
             data['date'] = date_str
+        # 数据入库
         mdb.insert_db_from_df(data, table_name, cols_type, False, "`date`,`code`")
 
     except Exception as e:
@@ -57,11 +63,13 @@ def prepare(date, strategy):
 def run_check(strategy_fun, table_name, stocks, date, workers=40):
     is_check_high_tight = False
     if strategy_fun.__name__ == 'check_high_tight':
+        # 获取近三月上龙虎榜且必须有2次以上机构参与的股票
         stock_tops = fetch_stock_top_entity_data(date)
         if stock_tops is not None:
             is_check_high_tight = True
     data = []
     try:
+        # 并发地对一组股票数据执行某种策略函数 strategy_fun，根据函数的返回值筛选出符合条件的股票，并将这些股票标识存储在 data 列表中
         with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
             if is_check_high_tight:
                 future_to_data = {executor.submit(strategy_fun, k, stocks[k], date=date, istop=(k[1] in stock_tops)): k for k in stocks}
@@ -86,6 +94,7 @@ def main():
     # 使用方法传递。
     with concurrent.futures.ThreadPoolExecutor() as executor:
         for strategy in tbs.TABLE_CN_STOCK_STRATEGIES:
+            # prepare, strategy 是传给run_with_args的参数，prepare是函数名，strategy是参数
             executor.submit(runt.run_with_args, prepare, strategy)
 
 

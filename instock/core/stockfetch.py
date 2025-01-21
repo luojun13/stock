@@ -48,7 +48,7 @@ def is_not_st(name):
     return not name.startswith(('*ST', 'ST'))
 
 
-# 过滤价格，如果没有基本上是退市了。
+# 过滤价格，如果没有基本上是退市了。通过最新价格判断是否是正常上市股票。
 def is_open(price):
     return not np.isnan(price)
 
@@ -88,9 +88,10 @@ def fetch_etfs(date):
     return None
 
 
-# 读取当天股票数据
+# 读取最近一个交易日股票数据
 def fetch_stocks(date):
     try:
+        # 从网络获取当日数据
         data = she.stock_zh_a_spot_em()
         if data is None or len(data.index) == 0:
             return None
@@ -99,13 +100,14 @@ def fetch_stocks(date):
         else:
             data.insert(0, 'date', date.strftime("%Y-%m-%d"))
         data.columns = list(tbs.TABLE_CN_STOCK_SPOT['columns'])
+        # 选取正常上市股票
         data = data.loc[data['code'].apply(is_a_stock)].loc[data['new_price'].apply(is_open)]
         return data
     except Exception as e:
         logging.error(f"stockfetch.fetch_stocks处理异常：{e}")
     return None
 
-
+# 获取东方财富网个股选股器数据  
 def fetch_stock_selection():
     try:
         data = sst.stock_selection()
@@ -269,7 +271,7 @@ def fetch_etf_hist(data_base, date_start=None, date_end=None, adjust='qfq'):
     return None
 
 
-# 读取股票历史数据
+# 读取3年股票历史数据
 def fetch_stock_hist(data_base, date_start=None, is_cache=True):
     date = data_base[0]
     code = data_base[1]

@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 计算蜡烛图形态
 
 import logging
 import concurrent.futures

@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+# 买卖点计算
 
 import logging
 import concurrent.futures
@@ -43,6 +43,9 @@ def prepare():
 
 
 def process(table, data_all, date, backtest_column):
+    """
+    处理单张表计算
+    """
     table_name = table['name']
     if not mdb.checkTableIsExist(table_name):
         return
