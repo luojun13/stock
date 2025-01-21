@@ -41,22 +41,22 @@ def main():
     # 第2.1步创建股票基础数据表
     hdj.main()
     # 第2.2步创建综合股票数据表
-    sddj.main()
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    # sddj.main()
+    # with concurrent.futures.ThreadPoolExecutor() as executor:
         # # 第3.1步创建股票其它基础数据表，包括龙虎榜、行业/概念资金流向（今日、3日、5日、10日）、分红配送数据
-        executor.submit(hdtj.main)
+        # executor.submit(hdtj.main)
         # # 第3.2步创建股票指标数据表
-        executor.submit(gdj.main)
+        # executor.submit(gdj.main)
         # # # # 第4步创建股票k线形态表
-        executor.submit(kdj.main)
+        # executor.submit(kdj.main)
         # # # # 第5步创建股票策略数据表
-        executor.submit(sdj.main)
+        # executor.submit(sdj.main)
 
     # # # # 第6步创建股票回测
-    bdj.main()
+    # bdj.main()
 
     # # # # 第7步创建股票闭盘后才有的数据
-    acdj.main()
+    # acdj.main()
 
     logging.info("######## 完成任务, 使用时间: %s 秒 #######" % (time.time() - start))
 
